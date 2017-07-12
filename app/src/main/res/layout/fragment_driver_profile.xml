@@ -1,0 +1,203 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.ridealongpivot.DriverProfileFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.ridealongpivot.RoundedImageView
+                    android:id="@+id/iv_driver_img"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    app:srcCompat="@drawable/logo_login"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/tv_driver_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mike Smith"
+                    android:textSize="25sp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vehicle_info"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:weightSum="2"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:layout_gravity="right|center_vertical"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="5dp"
+                        android:text="@string/car_model"/>
+
+                    <TextView
+                        android:id="@+id/tv_car_model"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@android:color/black"
+                        android:layout_margin="5dp"
+                        android:textSize="15sp"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:weightSum="2"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:layout_gravity="right|center_vertical"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="5dp"
+                        android:text="@string/car_color"/>
+
+                    <TextView
+                        android:id="@+id/tv_car_color"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@android:color/black"
+                        android:layout_margin="5dp"
+                        android:textSize="15sp"/></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:weightSum="2"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_weight="1"
+                        android:textStyle="bold"
+                        android:layout_gravity="right|center_vertical"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="5dp"
+                        android:text="@string/car_number"/>
+
+                    <TextView
+                        android:id="@+id/tv_car_licence"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@android:color/black"
+                        android:layout_margin="5dp"
+                        android:textSize="15sp"/>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/rating_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:progress="80"
+                    android:visibility="gone"
+                    android:progressTint="#ffcc00"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/tv_driver_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="712 Admiralty way USA"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginRight="150dp"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center" />
+
+                <EditText
+                    android:id="@+id/et_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginRight="150dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:gravity="center"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:hint="@string/submit_feedback_text"
+                    android:background="@drawable/orange_stroke_without_bg"
+                    android:layout_gravity="center"
+                    android:minLines="4"
+                    android:layout_marginTop="10dp"/>
+
+
+
+                <Button
+                    android:id="@+id/bt_submit_feedback"
+                    android:layout_width="250dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/login_button_bg"
+                    android:text="@string/submit_feedback"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_marginTop="20dp"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>

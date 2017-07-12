@@ -1,0 +1,144 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ridealongpivot.SelfieFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_selfie"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10">
+
+            <SurfaceView
+                android:id="@+id/surface_camera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/iv_change_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/change_camera_ic"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:id="@+id/ll_retake"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bt_retake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:background="@drawable/white_stroke_without_bg"
+                    android:text="@string/retake"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textStyle="bold"
+                    android:layout_marginRight="10dp"
+                    android:foreground="?android:attr/selectableItemBackground" />
+
+                <Button
+                    android:id="@+id/bt_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:background="@drawable/white_stroke_without_bg"
+                    android:text="@string/accept_send"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:foreground="?android:attr/selectableItemBackground" />
+
+                <ImageView
+                    android:id="@+id/iv_retake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/retake_ic"
+                    android:padding="10dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center" />
+                <ImageView
+                    android:id="@+id/iv_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/right_mark_ic"
+                    android:padding="10dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_snap"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:background="@drawable/login_button_bg"
+                android:text="@string/snap_and_send"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_marginTop="30dp"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#333333"
+            android:layout_weight="2"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/iv_capture"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/capture_img_ic"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/iv_flash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/flash_off"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,257 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.ridealongpivot.HelpFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_help"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="fitXY" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="120dp">
+
+                    <TextView
+                        android:id="@+id/tv_company_no1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(152) 666-1754"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:drawableLeft="@drawable/phone_ic"
+                        android:drawablePadding="20dp"/>
+                    <TextView
+                        android:id="@+id/tv_landline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/landline1"
+                        android:layout_below="@+id/tv_company_no1"
+                        android:layout_marginLeft="40dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_company_no2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(152) 666-1754"
+                        android:layout_toRightOf="@+id/tv_company_email"
+                        android:textColor="@android:color/black"
+                        android:layout_marginLeft="25dp"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_landline2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/landline2"
+                        android:layout_marginLeft="5dp"
+                        android:layout_below="@+id/tv_company_no2"
+                        android:layout_alignLeft="@+id/tv_company_no2"
+                        android:layout_alignStart="@+id/tv_company_no2" />
+
+                    <TextView
+                        android:id="@+id/tv_company_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="abc@gmail.com"
+                        android:layout_below="@+id/tv_landline"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:layout_marginTop="20dp"
+                        android:drawableLeft="@drawable/email_ic"
+                        android:drawablePadding="20dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/personal_work"
+                        android:layout_below="@+id/tv_company_email"
+                        android:layout_marginLeft="40dp"
+                        android:id="@+id/textView2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/tv_company_no2"
+                        android:layout_toEndOf="@+id/tv_company_no2"
+                        android:layout_marginLeft="100dp"
+                        android:layout_marginStart="100dp"
+                        android:id="@+id/textView" />
+                    <TextView
+                        android:id="@+id/tv_about"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@+id/textView"
+                        android:layout_alignLeft="@+id/textView"
+                        android:layout_alignStart="@+id/textView" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/address"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="10dp"/>
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/address"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/iv_site"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:srcCompat="@drawable/website_ic"/>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/iv_fb"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        app:srcCompat="@drawable/facebook_ic"/>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/iv_twitter"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        app:srcCompat="@drawable/twitter_ic"/>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/iv_google"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        app:srcCompat="@drawable/google_ic"/>
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/iv_insta"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        app:srcCompat="@drawable/instagram_ic"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/bt_get_driver"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/help_screen_button_bg"
+                        android:text="@string/get_driver_info"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginRight="10dp"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/bt_free_trial"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/help_screen_button_bg"
+                        android:text="@string/free_business_trial"
+                        android:textColor="@android:color/white"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="80dp"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/et_feedback_help"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="120dp"
+                    android:layout_marginRight="20dp"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:layout_marginTop="20dp"
+                    android:minLines="2"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:background="@drawable/orange_stroke_without_bg"
+                    android:textColor="@android:color/black"
+                    android:hint="@string/submit_feedback_text"/>
+
+                <Button
+                    android:id="@+id/bt_submit_help_feed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_button_bg"
+                    android:text="@string/submit"
+                    android:layout_marginTop="30dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="50dp"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:textColor="@android:color/white"/>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>

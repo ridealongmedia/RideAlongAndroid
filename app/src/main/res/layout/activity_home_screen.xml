@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rl_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/app_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:admarvel="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ad">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_login"
+            android:layout_marginTop="150dp"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:id="@+id/ll_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_profile"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/white_stroke_without_bg"
+                android:text="@string/profile"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:foreground="?android:attr/selectableItemBackground" />
+
+            <Button
+                android:id="@+id/bt_back_office"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/white_stroke_without_bg"
+                android:text="@string/back_office"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_marginTop="30dp"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_start"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/login_button_bg"
+            android:text="@string/start"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="130dp"
+            android:foreground="?android:attr/selectableItemBackground" />
+
+        <Button
+            android:id="@+id/bt_logout"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/login_button_bg"
+            android:text="@string/logout"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="110dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginTop="30dp"/>
+
+    </LinearLayout>
+
+    </ScrollView>
+
+    <com.admarvel.android.ads.AdMarvelView
+        android:id="@+id/ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        admarvel:backgroundColor="#726D6D"
+        admarvel:textBackgroundColor="#726D6D"
+        admarvel:textFontColor="#00FF00"
+        admarvel:textBorderColor="#000000"
+        admarvel:adMarvelViewSize="HEIGHT_50" />
+
+</RelativeLayout>

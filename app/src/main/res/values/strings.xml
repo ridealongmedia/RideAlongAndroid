@@ -1,0 +1,104 @@
+<resources>
+    <string name="app_name">RideAlong</string>
+
+    <!--<string name="google_api_key1">AIzaSyDm07CBz4Hka4A0RDzLDXVmVxmV0_jXGZs</string>-->
+    <string name="google_api_key1">AIzaSyCCtfHviQCxDNszE50WlrWY2kPAuY2EKOU</string>
+
+    <string name="facebook_app_id">475494676123506</string>
+
+    <string name="login_signup">Login/Sign up</string>
+    <string name="details">Please give the details to get started</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="forgot_password">Forgot password??</string>
+    <string name="login">Login</string>
+    <string name="logout">Log Out</string>
+    <string name="signup">Sign up</string>
+    <string name="already">Already have an account login?</string>
+
+    <string name="f_name">First Name</string>
+    <string name="l_name">Last Name</string>
+    <string name="full_name">Full Name</string>
+    <string name="phone">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="zip">Zip Code</string>
+    <string name="dob">Date of Birth</string>
+    <string name="ride_share_provide">Rideshare Provider</string>
+    <string name="provider_level">Provider Level</string>
+    <string name="referral">Referral Code</string>
+    <string name="short_bio">Short Bio</string>
+    <string name="vehicle_info">Vehicle Make &amp; Model</string>
+    <string name="term">Accept Terms of service</string>
+
+    <string name="enter_email">Enter your registered email</string>
+    <string name="enter_email_address">Enter your email to get information</string>
+    <string name="enter_otp">Enter the security code sent by email and choose a new password</string>
+
+    <string name="feedback">Feedback</string>
+    <string name="feedback_text">Thank you for your valuable feedback</string>
+
+    <string name="otp">Security Code </string>
+    <string name="new_pass">New Password</string>
+    <string name="submit">Submit</string>
+    <string name="resend">Resend</string>
+    <string name="update">Update</string>
+
+    <string name="car_model">Car Model</string>
+    <string name="car_number">Licence Plate</string>
+    <string name="car_color">Car Color</string>
+    <string name="update_profile">Update Profile</string>
+
+    <string name="login_gmail">Sign in with Google</string>
+    <string name="login_fb">Login with Facebook</string>
+
+    <string name="profile">Profile</string>
+    <string name="back_office">Back Office</string>
+    <string name="start">Start</string>
+    <string name="submit_feedback">Submit Feedback</string>
+    <string name="submit_feedback_text">Submit feedback</string>
+    <string name="snap_and_send">snap &amp; send photo</string>
+    <string name="retake">Retake</string>
+    <string name="accept_send">Accept and send</string>
+    <string name="tell_us_something">Tell us something about yourself</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+
+    <string name="can_not">can not be null</string>
+    <string name="valid_email">Email Address not valid</string>
+    <string name="same_pass">Password must be same</string>
+
+    <string name="press_again">Press again to exit!</string>
+
+    <string name="landline1">Landline 1</string>
+    <string name="landline2">Landline 2</string>
+    <string name="personal_work">Personal/Work</string>
+    <string name="about">About</string>
+
+    <string name="get_driver_info">Get Driver Info</string>
+    <string name="free_business_trial">Free Business Trial</string>
+
+    <string name="email_subject">Ride Along Selfie</string>
+    <string name="send_selfie_text">Enter your email to send your selfie</string>
+    <string name="send_selfie_term">Photo will be sent to the user by email and could potentially be used by Ride-A-Long Media on social accounts or other marketing materials. Ride-A-Long Media will contact the subject in the photo by email prior to using the image publicly.</string>
+    <string name="accept_term_selfie">Accept the term and conditions</string>
+
+    <string name="driver_info_screen">Driver information screen</string>
+    <string name="map_screen">Map screen</string>
+    <string name="selfie_screen">Selfie screen</string>
+    <string name="directory_screen">Directory screen</string>
+    <string name="help_screen">Help screen</string>
+    <string name="login_screen">Login screen</string>
+    <string name="home_screen">Home screen</string>
+    <string name="close">Close</string>
+
+    <string name="twitter_api">5kGbr8Nxw9NXS43DjuDQdCzVW</string>
+    <string name="twitter_secret">UGEUejkMLrl1qitVCo8IGq2rXktDbVMbDebTOU9UTQGCPoYOOj</string>
+
+    <string name="resToastText">Log Text for Ridealong</string>
+    <string name="post_special_offer">No offers yet, touch here to suggest one is added</string>
+    <string name="car_licence">License Plate Number:</string>
+
+    <string name="special_offer">SPECIAL OFFERS</string>
+</resources>

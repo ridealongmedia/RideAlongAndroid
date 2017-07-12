@@ -1,0 +1,105 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.ridealongpivot.MapFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.ridealongpivot.MapInfoWindow.MapWrapperLayout
+                android:id="@+id/map_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true" />
+            </com.ridealongpivot.MapInfoWindow.MapWrapperLayout>
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="80dp"
+                android:layout_marginTop="15dp"
+                android:background="#000"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/search_ic"
+                android:hint="Search"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="80dp"
+                android:layout_marginTop="15dp"
+                android:background="#000"
+                android:paddingBottom="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="5">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4.5"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:hint="Search"
+                    android:textColor="#fff">
+
+                    <requestFocus />
+                </AutoCompleteTextView>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/iv_search"
+                    app:srcCompat="@drawable/search_ic"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight=".5" />
+
+            </LinearLayout>
+
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_current_location"
+                app:srcCompat="@drawable/location_ic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="35dp"
+                android:layout_marginTop="15dp"
+                android:background="#fff"
+                android:padding="5dp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

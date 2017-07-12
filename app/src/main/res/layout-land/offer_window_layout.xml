@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:maxWidth="230dp"
+    android:background="@drawable/with_offer"
+    android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tv_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="230dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_info_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv_info_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
+            android:maxWidth="230dp"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/tv_info_offers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <RatingBar
+            android:id="@+id/rating_info"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/bt_offerrs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:textSize="16dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:layout_marginTop="12dp"
+            android:background="@android:color/transparent"
+            android:text="Special offers" />
+
+</LinearLayout>

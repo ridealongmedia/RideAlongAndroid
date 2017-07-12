@@ -1,0 +1,208 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.ridealongpivot.DirectoryFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_dictionary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:paddingLeft="100dp"
+        android:weightSum="6">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <ExpandableListView
+                android:id="@+id/list_dictionary"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="0.5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_offers"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3.5"
+                android:orientation="horizontal"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.2"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/special_offers_img"/>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5.3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_bus_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@android:color/black"
+                                android:textSize="18sp"
+                                android:layout_gravity="center"/>
+
+                            <TextView
+                                android:id="@+id/tv_bus_con_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="18sp"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@android:color/black"
+                                android:layout_marginTop="20dp"/>
+
+                            <TextView
+                                android:id="@+id/tv_bus_contact"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/phone_ic"
+                                android:drawablePadding="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@android:color/black"
+                                android:layout_marginTop="10dp"/>
+
+                            <TextView
+                                android:id="@+id/tv_bus_site"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/website_ic"
+                                android:drawablePadding="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@android:color/black"
+                                android:layout_marginTop="10dp"/>
+
+                            <TextView
+                                android:id="@+id/tv_bus_insta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/instagram_ic"
+                                android:drawablePadding="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@android:color/black"
+                                android:layout_marginTop="10dp"/>
+                            <TextView
+                                android:id="@+id/tv_bus_twitter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/twitter_ic"
+                                android:drawablePadding="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@android:color/black"
+                                android:layout_marginTop="10dp"/>
+                            <TextView
+                                android:id="@+id/tv_bus_facebook"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/facebook_ic"
+                                android:drawablePadding="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@android:color/black"
+                                android:layout_marginTop="10dp"/>
+                            <TextView
+                                android:id="@+id/tv_bus_snap"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/snapchat_ic"
+                                android:drawablePadding="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@android:color/black"
+                                android:layout_marginTop="10dp"/>
+
+                            <TextView
+                                android:id="@+id/tv_bus_add"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/map_pin_ic"
+                                android:drawablePadding="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@android:color/black"
+                                android:layout_marginTop="10dp"/>
+
+                            <TextView
+                                android:id="@+id/tv_bus_timing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/clock_ic"
+                                android:drawablePadding="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@android:color/black"
+                                android:layout_marginBottom="20dp"
+                                android:layout_marginTop="20dp"/>
+
+                        </LinearLayout>
+
+                    </ScrollView>
+
+                    <LinearLayout
+                        android:id="@+id/ll_social_feeds"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <WebView
+                            android:id="@+id/web_fb"
+                            android:layout_width="300dp"
+                            android:layout_margin="5dp"
+                            android:layout_height="match_parent"/>
+
+                        <WebView
+                            android:id="@+id/web_twit"
+                            android:layout_width="300dp"
+                            android:layout_margin="5dp"
+                            android:layout_height="match_parent"/>
+                        <WebView
+                            android:id="@+id/web_insta"
+                            android:layout_width="300dp"
+                            android:layout_margin="5dp"
+                            android:layout_height="match_parent"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
