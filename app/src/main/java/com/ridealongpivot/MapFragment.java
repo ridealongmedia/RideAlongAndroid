@@ -1,5 +1,6 @@
 package com.ridealongpivot;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -38,6 +39,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adcolony.sdk.AdColony;
 import com.adcolony.sdk.AdColonyAdOptions;
@@ -48,6 +50,7 @@ import com.adcolony.sdk.AdColonyNativeAdViewListener;
 import com.adcolony.sdk.AdColonyUserMetadata;
 import com.adcolony.sdk.AdColonyZone;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -206,6 +209,20 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
+
+        // Showing status
+        if(status==ConnectionResult.SUCCESS){
+
+        }
+            //tvStatus.setText("Google Play Services are available");
+        else{
+            //tvStatus.setText("Google Play Services are not available");
+            int requestCode = 10;
+            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, getActivity(), requestCode);
+            dialog.show();
         }
 
         executeDelayed();
@@ -544,13 +561,17 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         longitude=location.getLongitude();
         //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom_level));
        // Toast.makeText(getActivity(), "Location updated"+String.valueOf(location), Toast.LENGTH_SHORT).show();
-        if (location.hasAccuracy() && location.getAccuracy()> 20) {
+
+       // Toast.makeText(getActivity(), "Location changed"+String.valueOf(location), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), "Accuracy:"+String.valueOf(location.hasAccuracy()), Toast.LENGTH_SHORT).show();
+        if (location.hasAccuracy()) {
             if (mCurrLocation != null) {
                 //mCurrLocation.remove();
                 animateMarker(mCurrLocation, latLng, false);
                 Location lastLocaion=new Location("Location Start");
                 lastLocaion.setLatitude(lastUpdatedLatLng.latitude);
                 lastLocaion.setLongitude(lastUpdatedLatLng.longitude);
+
 
                 //rotateMarker(mCurrLocation, location.getBearing());
                 rotateMarker(mCurrLocation, lastLocaion.bearingTo(location));
@@ -1357,68 +1378,34 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
                             reportModel.setListAddress(add);
                             google_Markers.add(reportModel);
                         }
-
-                   /* for (int j=0;j<businessTypeArray.length();j++){
-                        String business_Type=businessTypeArray.getString(j);
-
-                        // Log.e("Type name",business_Type+" "+businessName);
-                        //Log.e("TYpe",business_Type);
-                        if (GoogleBusiness.contains(business_Type)) {
-                            //int isAvailable=0;
-                            BusinessesModel reportModel = new BusinessesModel();
-                            reportModel.setBuss_id(businessId);
-                            reportModel.setBuss_name(businessName);
-                            reportModel.setBuss_img(businessIcon);
-                            reportModel.setCat_name(correctCategoryName(business_Type));
-                            reportModel.setBuss_from(1);
-                            reportModel.setBuss_lat(String.valueOf(latpoint));
-                            reportModel.setBuss_long(String.valueOf(longpoint));
-                            reportModel.setBuss_marker_icon(ProfilePic);
-                            reportModel.setBuss_icon_type(0);
-
-                            ArrayList<AddressModel> add=new ArrayList<>();
-                            AddressModel addressModel=new AddressModel();
-                            addressModel.setBuss_id(businessId);
-                            addressModel.setBuss_name(businessName);
-                            addressModel.setBuss_img(businessIcon);
-                            addressModel.setCat_name(correctCategoryName(business_Type));
-                            addressModel.setBuss_from(1);
-                            addressModel.setBuss_lat(String.valueOf(latpoint));
-                            addressModel.setBuss_long(String.valueOf(longpoint));
-                            addressModel.setBuss_marker_icon(ProfilePic);
-                            addressModel.setBuss_icon_type(0);
-                            add.add(addressModel);
-
-                            reportModel.setListAddress(add);
-                            google_Markers.add(reportModel);
-                        }
-                    }*/
-
                     }
                     try {
-                        final String nextpageToken = places_Object.getString("next_page_token");
-                        if (!nextpageToken.equals("") || !nextpageToken.equals(null)) {
-                            final Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-                                    googlePlacesUrl.append("location=" + latitude + "," + longitude);
-                                    googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
-                                    //googlePlacesUrl.append("&types=" + "all");
-                                    googlePlacesUrl.append("&sensor=false");
-                                    googlePlacesUrl.append("&hasNextPage=true");
-                                    googlePlacesUrl.append("&nextPage()=true");
-                                    googlePlacesUrl.append("&key=" + getResources().getString(R.string.google_api_key1));
-                                    googlePlacesUrl.append("&pagetoken=" + nextpageToken);
-                                    // Log.e("Next page token", places_Object.getString("next_page_token"));
-                                    GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
-                                    Object[] toPass = new Object[2];
-                                    toPass[1] = googlePlacesUrl.toString();
-                                    googlePlacesReadTask.execute(toPass);
-                                }
-                            }, 3000);
-                        }
+
+                            final String nextpageToken = places_Object.getString("next_page_token");
+                            if (!nextpageToken.equals("") || !nextpageToken.equals(null)) {
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (isAdded() && getActivity() != null) {
+                                            StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+                                            googlePlacesUrl.append("location=" + latitude + "," + longitude);
+                                            googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
+                                            //googlePlacesUrl.append("&types=" + "all");
+                                            googlePlacesUrl.append("&sensor=false");
+                                            googlePlacesUrl.append("&hasNextPage=true");
+                                            googlePlacesUrl.append("&nextPage()=true");
+                                            googlePlacesUrl.append("&key=" + getResources().getString(R.string.google_api_key1));
+                                            googlePlacesUrl.append("&pagetoken=" + nextpageToken);
+                                            // Log.e("Next page token", places_Object.getString("next_page_token"));
+                                            GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
+                                            Object[] toPass = new Object[2];
+                                            toPass[1] = googlePlacesUrl.toString();
+                                            googlePlacesReadTask.execute(toPass);
+                                        }
+                                    }
+                                }, 3000);
+                            }
                     } catch (Exception e) {
                         parseDataAndSet(data);
 
@@ -1501,6 +1488,10 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     public void onPause() {
         super.onPause();
         mapFragment.onPause();
+        if(mGoogleApiClient != null && mGoogleApiClient.isConnected()){
+
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
+        }
     }
 
     @Override
