@@ -39,6 +39,11 @@ import com.adcolony.sdk.AdColonyInterstitialListener;
 import com.adcolony.sdk.AdColonyNativeAdView;
 import com.adcolony.sdk.AdColonyUserMetadata;
 import com.adcolony.sdk.AdColonyZone;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.ridealongpivot.gmailsender.SendMailTask;
 
 import java.io.File;
@@ -54,7 +59,7 @@ import static com.ridealongpivot.GlobalClass.ZONE_ID_AFTER_SELFIE;
 import static com.ridealongpivot.GlobalClass.ZONE_ID_IN_MAP;
 
 
-public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
+public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, RewardedVideoAdListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -89,6 +94,8 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
     private AdColonyInterstitialListener listener;
     private AdColonyAdOptions ad_options;
 
+    private RewardedVideoAd mAd;
+
     private OnFragmentInteractionListener mListener;
 
     public SelfieFragment() {
@@ -119,6 +126,8 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
                              Bundle savedInstanceState) {
 
         View view               = inflater.inflate(R.layout.fragment_selfie, container, false);
+        mAd = MobileAds.getRewardedVideoAdInstance(getActivity());
+        mAd.setRewardedVideoAdListener(this);
         iv_change_camera        = (ImageView) view.findViewById(R.id.iv_change_camera);
 
         bt_reake                = (Button) view.findViewById(R.id.bt_retake);
@@ -129,11 +138,12 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
         surfaceCamera           = (SurfaceView) view.findViewById(R.id.surface_camera);
         bt_snap                 = (Button) view.findViewById(R.id.bt_snap);
 
+        loadRewardedVideoAd();
         ll_retake.setVisibility(View.GONE);
 
         setSelfieData();
 
-        setAdcolonyData();
+        //setAdcolonyData();
         executeDelayed();
 
         start_camera(currentCameraId);
@@ -253,6 +263,46 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
         super.onDetach();
         Log.e("De Attached","De atached");
         mListener = null;
+    }
+
+    private void loadRewardedVideoAd() {
+        if (!mAd.isLoaded())
+            mAd.loadAd("ca-app-pub-7579462688885258/2238034509", new AdRequest.Builder().build());
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
     }
 
 
@@ -376,7 +426,7 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
                     try {
 
                         Bitmap bitmap      = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        Bitmap final_image = overlayBitmapToCenter(bitmap,BitmapFactory.decodeResource(getResources(), R.drawable.logo_login));
+                        Bitmap final_image = overlayBitmapToCenter(bitmap,BitmapFactory.decodeResource(getResources(), R.drawable.app_icon_new));
 
                         sendSelfieDialog(final_image);
 
@@ -430,8 +480,8 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
         int bitmap2Width = bitmap2.getWidth();
         int bitmap2Height = bitmap2.getHeight();
 
-        float marginLeft = (float) (bitmap1Width - (bitmap2Width+50));
-        float marginTop = (float) (bitmap1Height - (bitmap2Height+50));
+        float marginLeft = (float) (bitmap1Width - (bitmap2Width+10));
+        float marginTop = (float) (bitmap1Height - (bitmap2Height+10));
 
        /* Log.e("margen left", String.valueOf(marginLeft));
         Log.e("margen top", String.valueOf(marginTop));
@@ -496,7 +546,7 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         // TODO Auto-generated method stub
-        Log.e("Surface destroy","destroy");
+        //Log.e("Surface destroy","destroy");
         if(previewing) {
             camera.stopPreview();  // stopping camera preview
             camera.release();       // releasing camera
@@ -542,7 +592,7 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
                         new SendMailTask(getActivity()).execute(USER_ID,
                                 USER_PASS, toEmailList, getResources().getString(R.string.email_subject), SaveImage(final_image));
                         dialog.dismiss();
-                        ads.show();
+                        mAd.show();
                         isSelfieSent = false;
                         start_camera(currentCameraId);
                         ll_retake.setVisibility(View.GONE);
@@ -653,9 +703,8 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback {
         start_camera(currentCameraId);
         ll_retake.setVisibility(View.GONE);
         try {
-            if (ads == null || ads.isExpired()) {
-                AdColony.requestInterstitial(ZONE_ID_AFTER_SELFIE, listener, ad_options);
-            }
+            Log.e("admob","admob");
+            loadRewardedVideoAd();
         }catch (Exception ignored){
 
         }

@@ -8,12 +8,13 @@
     android:background="@drawable/app_bg"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:admarvel="http://schemas.android.com/tools">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ad"
+        android:layout_above="@+id/adView"
         android:padding="20dp">
 
         <LinearLayout
@@ -409,7 +410,17 @@
 
     </ScrollView>
 
-    <com.admarvel.android.ads.AdMarvelView
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/banner_bottom"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+    </com.google.android.gms.ads.AdView>
+
+    <!--<com.admarvel.android.ads.AdMarvelView
         android:id="@+id/ad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -418,6 +429,6 @@
         admarvel:textBackgroundColor="#726D6D"
         admarvel:textFontColor="#00FF00"
         admarvel:textBorderColor="#000000"
-        admarvel:adMarvelViewSize="HEIGHT_50" />
+        admarvel:adMarvelViewSize="HEIGHT_50" />-->
 
 </RelativeLayout>

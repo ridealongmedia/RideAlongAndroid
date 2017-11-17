@@ -1,5 +1,7 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:admarvel="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +10,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ad">
+        android:layout_above="@+id/adView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -83,10 +87,19 @@
 
         </LinearLayout>
 
-
     </RelativeLayout>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="SMART_BANNER"
+        android:background="@android:color/white"
+        ads:adUnitId="@string/banner_bottom"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+    </com.google.android.gms.ads.AdView>
 
-    <com.admarvel.android.ads.AdMarvelView
+    <!--<com.admarvel.android.ads.AdMarvelView
         android:id="@+id/ad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,6 +108,6 @@
         admarvel:textBackgroundColor="#726D6D"
         admarvel:textFontColor="#00FF00"
         admarvel:textBorderColor="#000000"
-        admarvel:adMarvelViewSize="HEIGHT_90" />
+        admarvel:adMarvelViewSize="HEIGHT_90" />-->
 
 </RelativeLayout>

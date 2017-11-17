@@ -8,7 +8,7 @@
         android:required="true" />
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="15"
         android:maxSdkVersion="25"
         tools:overrideLibrary="com.facebook,android.support.customtabs,cn.fanrunqi.waveprogress"/>
 
@@ -120,7 +120,7 @@
         </activity>
 
 
-        <receiver android:name="com.ridealongpivot.MyAdmin"
+        <!--<receiver android:name="com.ridealongpivot.MyAdmin"
             android:label="@string/app_name"
             android:description="@string/app_name"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -129,16 +129,18 @@
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <meta-data android:name="io.fabric.ApiKey" android:value="5kGbr8Nxw9NXS43DjuDQdCzVW"/>
 
-        <service android:name="com.ridealongpivot.MyFirebaseMessagingService">
+        <service android:name="com.ridealongpivot.MyFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="com.ridealongpivot.FirebaseIDService">
+        <service android:name="com.ridealongpivot.FirebaseIDService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -163,6 +165,11 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
 
+        <!--Include the AdActivity configChanges and theme. -->
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
     </application>
 
 </manifest>

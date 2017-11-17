@@ -226,6 +226,7 @@ public class GlobalClass {
     }
 
     public static String AdMarvelBannerSiteId   = "205918";
+    public static String AdMarvelBannerSite90   = "205917";
     public static String AdMarvelBannerPartnerId= "5f1189b453b4d67f";
 
     public static void showToastMessage(final Activity context,

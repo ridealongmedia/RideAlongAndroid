@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,10 @@ import android.widget.RelativeLayout;
 
 import com.admarvel.android.ads.AdMarvelUtils;
 import com.admarvel.android.ads.AdMarvelView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.apache.http.HttpResponse;
@@ -41,9 +46,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 import static com.ridealongpivot.GlobalClass.AdMarvelBannerPartnerId;
+import static com.ridealongpivot.GlobalClass.AdMarvelBannerSite90;
 import static com.ridealongpivot.GlobalClass.AdMarvelBannerSiteId;
 import static com.ridealongpivot.GlobalClass.CheckDriverStatus;
 import static com.ridealongpivot.GlobalClass.LogoutDriver;
@@ -62,7 +70,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     String user_id;
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
-    AdMarvelView adMarvelView;
+    //AdMarvelView adMarvelView;
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +84,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         bt_start            = (Button) findViewById(R.id.bt_start);
         bt_logout           = (Button) findViewById(R.id.bt_logout);
         rl_main             = (RelativeLayout) findViewById(R.id.rl_main);
-        adMarvelView        = (AdMarvelView) findViewById(R.id.ad);
+        //adMarvelView        = (AdMarvelView) findViewById(R.id.ad);
+        adView              = (AdView) findViewById(R.id.adView);
         user_id             = GlobalClass.callSavedPreferences("id",context);
 
         if (isNavigationBarAvailable()) rl_main.setPadding(0,0,0,navBarHeight());
@@ -96,7 +106,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         }
 
-        setAdmarvelAds();
+        //setAdmarvelAds();
+        setAdmobAds();
 
         bt_start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,55 +201,72 @@ public class HomeScreenActivity extends AppCompatActivity {
             Log.e("Key Hash=", key);
         }*/
 
-
     }
 
-    public void setAdmarvelAds(){
+
+    public void setAdmobAds(){
+        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.banner_bottom));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+        });
+    }
+    /*public void setAdmarvelAds(){
         try {
             Map<AdMarvelUtils.SDKAdNetwork, String> publisherIds = new HashMap<AdMarvelUtils.SDKAdNetwork, String>();
             publisherIds.put(null, null);
             AdMarvelUtils.initialize(HomeScreenActivity.this, publisherIds);
 
-            Map<String, Object> targetParams = new HashMap<String, Object>();
+            final Map<String, Object> targetParams = new HashMap<String, Object>();
             //targetParams.put("KEYWORDS", "games");
             targetParams.put("APP_VERSION", "1.0.0"); //version of your app
             adMarvelView.requestNewAd(targetParams, AdMarvelBannerPartnerId, AdMarvelBannerSiteId);
+            adMarvelView.setListener( new AdMarvelView.AdMarvelViewListener() {
+                @Override
+                public void onRequestAd(AdMarvelView arg0) {
+                    Log.e("adrequested","addddd");
+                }
+
+                @Override
+                public void onReceiveAd(AdMarvelView arg0) {
+                    Log.e("adrequested","add received");
+                }
+
+                @Override
+                public void onFailedToReceiveAd(AdMarvelView arg0, int arg1, AdMarvelUtils.ErrorReason arg2) {
+                    Log.e("adrequested","failed to receive");
+                }
+
+                @Override
+                public void onExpand(AdMarvelView arg0) {
+                    Log.e("adrequested","expand");
+                }
+
+                @Override
+                public void onClose(AdMarvelView arg0) {
+                    Log.e("adrequested","close");
+                }
+
+                @Override
+                public void onClickAd( AdMarvelView arg0, String arg1) {
+
+                }
+            } );
         }catch (Exception ignored){
 
         }
 
-        adMarvelView.setListener( new AdMarvelView.AdMarvelViewListener() {
-            @Override
-            public void onRequestAd(AdMarvelView arg0) {
 
-            }
-
-            @Override
-            public void onReceiveAd(AdMarvelView arg0) {
-
-            }
-
-            @Override
-            public void onFailedToReceiveAd(AdMarvelView arg0, int arg1, AdMarvelUtils.ErrorReason arg2) {
-
-            }
-
-            @Override
-            public void onExpand(AdMarvelView arg0) {
-
-            }
-
-            @Override
-            public void onClose(AdMarvelView arg0) {
-
-            }
-
-            @Override
-            public void onClickAd( AdMarvelView arg0, String arg1) {
-
-            }
-        } );
-    }
+    }*/
 
     public int navBarHeight(){
         Resources resources = context.getResources();
@@ -395,34 +423,34 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         user_id  = GlobalClass.callSavedPreferences("id",context);
-        try {
+       /* try {
            // AdMarvelView adMarvelView = (AdMarvelView) findViewById(R.id.ad);
             adMarvelView.resume(this);
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        try {
+        /*try {
            // AdMarvelView adMarvelView = (AdMarvelView) findViewById(R.id.ad);
             adMarvelView.pause(this);
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        try {
+        /*try {
            // AdMarvelView adMarvelView = (AdMarvelView) findViewById(R.id.ad);
             adMarvelView.destroy();
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override

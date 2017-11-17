@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
@@ -59,6 +60,10 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -91,6 +96,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.ridealongpivot.GlobalClass.AdMarvelBannerPartnerId;
 import static com.ridealongpivot.GlobalClass.AdMarvelBannerSiteId;
@@ -155,10 +162,14 @@ public class LoginSignupActivity extends AppCompatActivity implements TextWatche
     String otherProvider="",otherLevel="";
     String forgot_email="";
     Dialog newPassDialog;
-    AdMarvelView adMarvelView;
+    //AdMarvelView adMarvelView;
 
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
+    private Timer mTimer1;
+    private TimerTask mTt1;
+    private Handler mTimerHandler = new Handler();
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,7 +235,8 @@ public class LoginSignupActivity extends AppCompatActivity implements TextWatche
         tv_already          = (TextView) findViewById(R.id.tv_already);
         tv_signup           = (TextView) findViewById(R.id.tv_signup);
 
-        adMarvelView        = (AdMarvelView) findViewById(R.id.ad);
+        //adMarvelView        = (AdMarvelView) findViewById(R.id.ad);
+        adView              = (AdView) findViewById(R.id.adView);
 
         list_level          = new ArrayList<ReportModel>();
 
@@ -246,7 +258,8 @@ public class LoginSignupActivity extends AppCompatActivity implements TextWatche
         et_pass2.addTextChangedListener(this);
         et_referral.addTextChangedListener(this);
 
-        setAdmarvelAds();
+        //setAdmarvelAds();
+        setAdmobAds();
 
         setSpinnerProviderItems();
 
@@ -333,7 +346,7 @@ public class LoginSignupActivity extends AppCompatActivity implements TextWatche
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 et_pass_login.clearFocus();
-                if (et_email_login.getText().toString().trim().length()<=0 || !et_email_login.getText().toString().trim().matches(emailPattern)){
+                if (et_email_login.getText().toString().trim().length()<=0){
                     input_email_login.setError(getResources().getString(R.string.valid_email));
                     et_email_login.requestFocus();
                 }
@@ -471,7 +484,7 @@ public class LoginSignupActivity extends AppCompatActivity implements TextWatche
         bt_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (et_email_login.getText().toString().trim().length()<=0 || !et_email_login.getText().toString().trim().matches(emailPattern)){
+                if (et_email_login.getText().toString().trim().length()<=0){
                     input_email_login.setError(getResources().getString(R.string.valid_email));
                     et_email_login.requestFocus();
                 }
@@ -726,11 +739,11 @@ public class LoginSignupActivity extends AppCompatActivity implements TextWatche
             isValid=false;
             et_email_sign.requestFocus();
         }
-        else if (!et_email_sign.getText().toString().trim().matches(emailPattern)) {
+        /*else if (!et_email_sign.getText().toString().trim().matches(emailPattern)) {
             input_email_sign.setError(getResources().getString(R.string.valid_email));
             isValid = false;
             et_email_sign.requestFocus();
-        }
+        }*/
         else if (et_address.getText().toString().trim().length()<=0){
             input_address.setError(getResources().getString(R.string.address)+" "+getResources().getString(R.string.can_not));
             et_address.requestFocus();
@@ -928,7 +941,7 @@ public class LoginSignupActivity extends AppCompatActivity implements TextWatche
         bt_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (et_email.getText().toString().trim().length()<=0 || !et_email.getText().toString().trim().matches(emailPattern)){
+                if (et_email.getText().toString().trim().length()<=0 ){
                     input_email.setError(getResources().getString(R.string.valid_email));
                 }
                 else {
@@ -1690,7 +1703,23 @@ public class LoginSignupActivity extends AppCompatActivity implements TextWatche
 
     }
 
-    public void setAdmarvelAds(){
+    public void setAdmobAds(){
+        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.banner_bottom));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+        });
+    }
+    /*public void setAdmarvelAds(){
         try {
             Map<AdMarvelUtils.SDKAdNetwork, String> publisherIds = new HashMap<AdMarvelUtils.SDKAdNetwork, String>();
             publisherIds.put(null, null);
@@ -1703,36 +1732,36 @@ public class LoginSignupActivity extends AppCompatActivity implements TextWatche
         }catch (Exception ignored){
 
         }
-    }
+    }*/
 
     @Override
     public void onResume(){
         super.onResume();
-        try {
+        /*try {
             adMarvelView.resume(this);
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        try {
+        /*try {
             adMarvelView.pause(this);
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        try {
+        /*try {
             adMarvelView.destroy();
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override

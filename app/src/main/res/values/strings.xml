@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">RideAlong</string>
 
+    <!-- AdMob ad unit IDs -->
+    <string name="banner_bottom">ca-app-pub-7579462688885258/4125831244</string>
+    <string name="video_full_screen">ca-app-pub-7579462688885258/2238034509</string>
+
     <!--<string name="google_api_key1">AIzaSyDm07CBz4Hka4A0RDzLDXVmVxmV0_jXGZs</string>-->
     <string name="google_api_key1">AIzaSyCCtfHviQCxDNszE50WlrWY2kPAuY2EKOU</string>
 

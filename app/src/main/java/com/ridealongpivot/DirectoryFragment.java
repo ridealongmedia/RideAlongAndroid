@@ -73,6 +73,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -294,7 +296,6 @@ public class DirectoryFragment extends Fragment implements GoogleApiClient.Conne
 
         return view;
     }
-
 
     private void executeDelayed() {
         Handler handler = new Handler();
@@ -555,9 +556,6 @@ public class DirectoryFragment extends Fragment implements GoogleApiClient.Conne
                     holder.wv_videos.stopPlayback();
                     holder.wv_videos.setMediaController(mediaController);
 
-
-
-
                 }
                 else {
                     holder.iv_special_ofrs.setVisibility(View.GONE);
@@ -656,8 +654,9 @@ public class DirectoryFragment extends Fragment implements GoogleApiClient.Conne
                             tv_bus_insta.setVisibility(View.GONE);
                         } else {
                             tv_bus_insta.setVisibility(View.VISIBLE);
-                            String[] usrUserName = businessDetailsModel.getBuss_insata().split("@");
-                            if (usrUserName.length > 1) tv_bus_insta.setText(usrUserName[1]);
+                            //String[] usrUserName = businessDetailsModel.getBuss_insata().split("@");
+                            //if (usrUserName.length > 1)
+                            tv_bus_insta.setText(businessDetailsModel.getBuss_insata());
                             tv_bus_insta.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -676,11 +675,9 @@ public class DirectoryFragment extends Fragment implements GoogleApiClient.Conne
                             tv_bus_twit.setVisibility(View.GONE);
                         } else {
                             tv_bus_twit.setVisibility(View.VISIBLE);
-                            String[] usrUserName = businessDetailsModel.getBuss_twitter().split("@");
-                            if (usrUserName.length > 1) {
-                                tv_bus_twit.setText(usrUserName[1]);
-
-                            }
+                            //String[] usrUserName = businessDetailsModel.getBuss_twitter().split("@");
+                            //if (usrUserName.length > 1)
+                            tv_bus_twit.setText(businessDetailsModel.getBuss_twitter());
                             tv_bus_twit.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -696,11 +693,15 @@ public class DirectoryFragment extends Fragment implements GoogleApiClient.Conne
 
                         }
 
+                        Log.e("insta",businessDetailsModel.getBuss_insata());
+                        Log.e("twitter",businessDetailsModel.getBuss_twitter());
+                        Log.e("snapchat",businessDetailsModel.getBuss_snapchat());
+                        Log.e("fblink",businessDetailsModel.getBuss_fb());
                         if (businessDetailsModel.getBuss_fb() == null || businessDetailsModel.getBuss_fb().equals("")) {
                             tv_bus_fb.setVisibility(View.GONE);
                         } else {
                             tv_bus_fb.setVisibility(View.VISIBLE);
-                            String[] usrUserName = businessDetailsModel.getBuss_fb().split("@");
+                            String[] usrUserName = businessDetailsModel.getBuss_fb().split(".com/");
                             if (usrUserName.length > 1) tv_bus_fb.setText(usrUserName[1]);
                             tv_bus_fb.setOnClickListener(new View.OnClickListener() {
                                 @Override

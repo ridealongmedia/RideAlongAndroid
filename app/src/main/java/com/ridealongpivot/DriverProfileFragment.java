@@ -194,7 +194,7 @@ public class DriverProfileFragment extends Fragment {
 
     private void setProfileData(){
         try {
-            tv_driver_name.setText(GlobalClass.callSavedPreferences("fname", getContext()) + " " + GlobalClass.callSavedPreferences("lname", getContext()));
+            tv_driver_name.setText(GlobalClass.callSavedPreferences("fname", getContext()) + " " + GlobalClass.callSavedPreferences("lname", getContext()).charAt(0));
             tv_driver_add.setText(GlobalClass.callSavedPreferences("short_bio", getContext()));
 
             tv_car_model.setText(GlobalClass.callSavedPreferences("car_model", getContext()));

@@ -29,6 +29,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -50,6 +51,11 @@ import android.widget.Toast;
 
 import com.admarvel.android.ads.AdMarvelUtils;
 import com.admarvel.android.ads.AdMarvelView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -84,8 +90,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.ridealongpivot.GlobalClass.AdMarvelBannerPartnerId;
+import static com.ridealongpivot.GlobalClass.AdMarvelBannerSite90;
 import static com.ridealongpivot.GlobalClass.AdMarvelBannerSiteId;
 import static com.ridealongpivot.GlobalClass.CategoryIcon;
 import static com.ridealongpivot.GlobalClass.GetCategoryListB;
@@ -145,13 +154,15 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
     Dialog mainDialog;
     long lastUpdatedTime=System.currentTimeMillis();
 
-    AdMarvelView adMarvelView;
+    //AdMarvelView adMarvelView;
+    AdView adView;
 
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;
 
     private int clickedCount=0;
     boolean isAlreadyClicked=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,13 +189,14 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
         ll_menu                 = (LinearLayout) findViewById(R.id.ll_menu);
         ll_frame                = (LinearLayout) findViewById(R.id.ll_frame);
 
-        adMarvelView            = (AdMarvelView) findViewById(R.id.ad);
+        //adMarvelView            = (AdMarvelView) findViewById(R.id.ad);
+        adView                  = (AdView) findViewById(R.id.adView);
 
         lm                      = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         fmanager                = getSupportFragmentManager();
-        if (isNavigationBarAvailable()) rl_main.setPadding(0, 0, 0, navBarHeight());
+       // if (isNavigationBarAvailable()) rl_main.setPadding(0, 0, 0, navBarHeight());
        // mapFragment.getMapAsync(this);
         mainDialog=loadingDialog(Main_StartActivity.this);
 
@@ -193,12 +205,13 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
         google_businessses      = new ArrayList<BusinessesModel>();
         catIcons                = new ArrayList<ReportModel>();
 
-        setAdmarvelAds();
+        //setAdmarvelAds();
+        //startTimer();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             DevicePolicyManager myDevicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
             // get this app package name
-            ComponentName mDPM = new ComponentName(this, MyAdmin.class);
+          //  ComponentName mDPM = new ComponentName(this, MyAdmin.class);
             //startLockTask();
             if (myDevicePolicyManager.isDeviceOwnerApp(this.getPackageName())) {
                 // get this app package name
@@ -222,14 +235,16 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
         buildGoogleApiClient();
         mGoogleApiClient.connect();
 
+        setAdmobAds();
+
+       // mTracker.setSessionTimeout();
 
         iv_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    mTracker.setScreenName(getResources().getString(R.string.driver_info_screen));
-                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
                     selectedMenu=4;
+                    setAnalyticsData();
                     ImageViewAnimatedChange(context, iv_profile, R.drawable.profile_enable);
                     iv_dictionary.setImageResource(R.drawable.dictionary_disable);
                     iv_map.setImageResource(R.drawable.map_disable);
@@ -248,9 +263,7 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
             @Override
             public void onClick(View v) {
                 try {
-                    mTracker.setScreenName(getResources().getString(R.string.directory_screen));
-                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-                    selectedMenu=1;
+                    setAnalyticsData();
                     ImageViewAnimatedChange(context, iv_dictionary, R.drawable.dictionary_enable);
                     iv_profile.setImageResource(R.drawable.profile_disable);
                     iv_map.setImageResource(R.drawable.map_disable);
@@ -275,9 +288,8 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
             @Override
             public void onClick(View v) {
                 try {
-                    mTracker.setScreenName(getResources().getString(R.string.map_screen));
-                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
                     selectedMenu=2;
+                    setAnalyticsData();
                     ImageViewAnimatedChange(context, iv_map, R.drawable.map_enable);
                     iv_profile.setImageResource(R.drawable.profile_disable);
                     iv_dictionary.setImageResource(R.drawable.dictionary_disable);
@@ -304,10 +316,9 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
             @Override
             public void onClick(View v) {
                 try {
-                    mTracker.setScreenName(getResources().getString(R.string.selfie_screen));
-                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-                    selectedMenu=3;
 
+                    selectedMenu=3;
+                    setAnalyticsData();
                     ImageViewAnimatedChange(context, iv_selfie, R.drawable.selfie_enable);
                     iv_profile.setImageResource(R.drawable.profile_disable);
                     iv_dictionary.setImageResource(R.drawable.dictionary_disable);
@@ -330,9 +341,7 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
             @Override
             public void onClick(View v) {
                 try {
-                    mTracker.setScreenName(getResources().getString(R.string.help_screen));
-                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-                    selectedMenu=5;
+                    setAnalyticsData();
                     iv_profile.setImageResource(R.drawable.profile_disable);
                     iv_dictionary.setImageResource(R.drawable.dictionary_disable);
                     iv_map.setImageResource(R.drawable.map_disable);
@@ -350,8 +359,64 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
 
     }
 
-    @Override
-        public boolean onKeyDown(int keyCode, KeyEvent event){
+    public void setAnalyticsData(){
+        mTracker.set("uid",GlobalClass.callSavedPreferences("email",context));
+        mTracker.setClientId(GlobalClass.callSavedPreferences("id",context));
+       // mTracker.setSessionTimeout(-1);
+
+        if (selectedMenu == 1){
+            mTracker.setScreenName(getResources().getString(R.string.directory_screen));
+            mTracker.setTitle(getResources().getString(R.string.directory_screen));
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory(GlobalClass.callSavedPreferences("email",context))
+                    .setCustomDimension(1,GlobalClass.callSavedPreferences("email",context))
+                    .setAction(getResources().getString(R.string.directory_screen))
+                    .build());
+
+        } else if (selectedMenu == 2){
+            mTracker.setScreenName(getResources().getString(R.string.map_screen));
+            mTracker.setTitle(getResources().getString(R.string.map_screen));
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory(GlobalClass.callSavedPreferences("email",context))
+                    .setCustomDimension(1,GlobalClass.callSavedPreferences("email",context))
+                    .setAction(getResources().getString(R.string.map_screen))
+                    .build());
+        } else if (selectedMenu == 3){
+            mTracker.setScreenName(getResources().getString(R.string.selfie_screen));
+            mTracker.setTitle(getResources().getString(R.string.selfie_screen));
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory(GlobalClass.callSavedPreferences("email",context))
+                    .setCustomDimension(1,GlobalClass.callSavedPreferences("email",context))
+                    .setAction(getResources().getString(R.string.selfie_screen))
+                    .build());
+        }
+        else if (selectedMenu == 4){
+            mTracker.setScreenName(getResources().getString(R.string.driver_info_screen));
+            mTracker.setTitle(getResources().getString(R.string.driver_info_screen));
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory(GlobalClass.callSavedPreferences("email",context))
+                    .setCustomDimension(1,GlobalClass.callSavedPreferences("email",context))
+                    .setAction(getResources().getString(R.string.driver_info_screen))
+                    .build());
+        }
+        else if (selectedMenu == 5){
+            mTracker.setScreenName(getResources().getString(R.string.help_screen));
+            mTracker.setTitle(getResources().getString(R.string.help_screen));
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory(GlobalClass.callSavedPreferences("email",context))
+                    .setCustomDimension(1,GlobalClass.callSavedPreferences("email",context))
+                    .setAction(getResources().getString(R.string.help_screen))
+                    .build());
+        }
+    }
+
+   /* @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
            // Log.e("Key event", String.valueOf(event));
         if (keyCode == KeyEvent.KEYCODE_BACK){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -371,10 +436,10 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
                 if (clickedCount >=6){
                     try{
                         stopLockTask();
-                    /*if (mGoogleApiClient != null) {
+                    *//*if (mGoogleApiClient != null) {
                         // LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
                         mGoogleApiClient.disconnect();
-                    }*/
+                    }*//*
                         finish();}
                     catch (Exception e){
                       //  Log.e("exception",e.getMessage());
@@ -421,7 +486,7 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
         }
 
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
     private void setVolumMax(){
         AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -661,6 +726,7 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
 
             try {
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                nameValuePairs.add(new BasicNameValuePair("driver_id", GlobalClass.callSavedPreferences("id",context)));
                 nameValuePairs.add(new BasicNameValuePair("business_lat", params[0]));
                 nameValuePairs.add(new BasicNameValuePair("business_long", params[1]));
                 /*nameValuePairs.add(new BasicNameValuePair("business_lat", "38.0323672"));
@@ -854,6 +920,7 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
                     }
                 }catch (Exception e){
                     //e.printStackTrace();
+                    setAnalyticsData();
                     if (mainDialog.isShowing()) mainDialog.dismiss();
                     if (selectedMenu == 1) {
                         ftransaction = getSupportFragmentManager().beginTransaction();
@@ -937,7 +1004,24 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
         return sTracker;
     }
 
-    public void setAdmarvelAds(){
+    public void setAdmobAds(){
+        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.banner_bottom));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+        });
+    }
+
+    /*public void setAdmarvelAds(){
         try {
             Map<AdMarvelUtils.SDKAdNetwork, String> publisherIds = new HashMap<AdMarvelUtils.SDKAdNetwork, String>();
             publisherIds.put(null, null);
@@ -946,11 +1030,11 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
             Map<String, Object> targetParams = new HashMap<String, Object>();
             //targetParams.put("KEYWORDS", "games");
             targetParams.put("APP_VERSION", "1.0.0"); //version of your app
-            adMarvelView.requestNewAd(targetParams, AdMarvelBannerPartnerId, AdMarvelBannerSiteId);
+            adMarvelView.requestNewAd(targetParams, AdMarvelBannerPartnerId, AdMarvelBannerSite90);
         }catch (Exception ignored){
 
         }
-    }
+    }*/
 
 
     @Override
@@ -961,35 +1045,36 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
     @Override
     public void onResume(){
         super.onResume();
-        try {
+        /*try {
             adMarvelView.resume(this);
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        try {
+        //stopTimer();
+        /*try {
             adMarvelView.pause(this);
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        try {
+        /*try {
             adMarvelView.destroy();
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
 
-   /* @Override
+    @Override
     public void onBackPressed(){
         //super.onBackPressed();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1007,7 +1092,9 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
                 clickedCount+=1;
             }
             if (clickedCount >=6){
-                stopLockTask();
+                try {
+                    stopLockTask();
+                } catch (NullPointerException ignored){}
                 if (mGoogleApiClient != null) {
                    // LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
                     mGoogleApiClient.disconnect();
@@ -1022,5 +1109,5 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
             }
             finish();
         }
-    }*/
+    }
 }

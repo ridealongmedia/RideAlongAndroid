@@ -12,7 +12,9 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -50,6 +52,10 @@ import android.widget.Toast;
 
 import com.admarvel.android.ads.AdMarvelUtils;
 import com.admarvel.android.ads.AdMarvelView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpResponse;
@@ -74,6 +80,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.ridealongpivot.GlobalClass.AdMarvelBannerPartnerId;
 import static com.ridealongpivot.GlobalClass.AdMarvelBannerSiteId;
@@ -116,7 +124,11 @@ public class ProfileActivity extends AppCompatActivity implements TextWatcher {
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     String encoded_image="";
     String selected_checkbox;
-    AdMarvelView adMarvelView;
+    //AdMarvelView adMarvelView;
+    AdView adView;
+    private Timer mTimer1;
+    private TimerTask mTt1;
+    private Handler mTimerHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,11 +181,18 @@ public class ProfileActivity extends AppCompatActivity implements TextWatcher {
         cb_level_other      = (CheckBox) findViewById(R.id.cb_level_other);
         bt_update           = (Button) findViewById(R.id.bt_update_profile);
 
-        adMarvelView        = (AdMarvelView) findViewById(R.id.ad);
+        //adMarvelView        = (AdMarvelView) findViewById(R.id.ad);
+        adView              = (AdView) findViewById(R.id.adView);
 
         if (isNavigationBarAvailable()) rl_main.setPadding(0,0,0,navBarHeight());
 
-        setAdmarvelAds();
+        String android_id = Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        Log.e("device id",android_id);
+
+        //setAdmarvelAds();
+        //startTimer();
+        setAdmobAds();
 
         list_level          = new ArrayList<ReportModel>();
 
@@ -446,6 +465,30 @@ public class ProfileActivity extends AppCompatActivity implements TextWatcher {
         }
 
     }
+
+    /*private void stopTimer(){
+        if(mTimer1 != null){
+            mTimer1.cancel();
+            mTimer1.purge();
+        }
+    }
+
+    private void startTimer(){
+        mTimer1 = new Timer();
+        mTt1 = new TimerTask() {
+            public void run() {
+                mTimerHandler.post(new Runnable() {
+                    public void run(){
+                        //TODO
+                        //setAdmarvelAds();
+                        setAdmobAds();
+                    }
+                });
+            }
+        };
+
+        mTimer1.schedule(mTt1, 1, 30000);
+    }*/
 
     private void setDefaultData(){
         otherProvider = GlobalClass.callSavedPreferences("rs_provider_othr",context);
@@ -820,8 +863,9 @@ public class ProfileActivity extends AppCompatActivity implements TextWatcher {
         @Override
         protected void onPostExecute(String responseStr) {
             super.onPostExecute(responseStr);
-            if (dialog.isShowing()) dialog.dismiss();
-
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
             if (responseStr.length() > 0) {
                 try {
                     JSONObject city_object=new JSONObject(responseStr);
@@ -1049,7 +1093,54 @@ public class ProfileActivity extends AppCompatActivity implements TextWatcher {
         }
     }
 
-    public void setAdmarvelAds(){
+    public void setAdmobAds(){
+        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.banner_bottom));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                Log.e("adloaded","adloaded");
+            }
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                Log.e("onAdClosed","onAdClosed");
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                Log.e("onAdFailedToLoad","onAdFailedToLoad");
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+                Log.e("onAdLeftApplication","onAdLeftApplication");
+            }
+
+            @Override
+            public void onAdClicked() {
+                super.onAdClicked();
+                Log.e("onAdClicked","onAdClicked");
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+                Log.e("onAdImpression","onAdImpression");
+            }
+        });
+    }
+    /*public void setAdmarvelAds(){
         try {
             Map<AdMarvelUtils.SDKAdNetwork, String> publisherIds = new HashMap<AdMarvelUtils.SDKAdNetwork, String>();
             publisherIds.put(null, null);
@@ -1059,39 +1150,72 @@ public class ProfileActivity extends AppCompatActivity implements TextWatcher {
             //targetParams.put("KEYWORDS", "games");
             targetParams.put("APP_VERSION", "1.0.0"); //version of your app
             adMarvelView.requestNewAd(targetParams, AdMarvelBannerPartnerId, AdMarvelBannerSiteId);
+
+            adMarvelView.setListener( new AdMarvelView.AdMarvelViewListener() {
+                @Override
+                public void onRequestAd(AdMarvelView arg0) {
+                    Log.e("adrequested","addddd");
+                }
+
+                @Override
+                public void onReceiveAd(AdMarvelView arg0) {
+                    Log.e("adrequested","add received");
+                }
+
+                @Override
+                public void onFailedToReceiveAd(AdMarvelView arg0, int arg1, AdMarvelUtils.ErrorReason arg2) {
+                    Log.e("adrequested","failed to receive");
+                }
+
+                @Override
+                public void onExpand(AdMarvelView arg0) {
+                    Log.e("adrequested","expand");
+                }
+
+                @Override
+                public void onClose(AdMarvelView arg0) {
+                    Log.e("adrequested","close");
+                }
+
+                @Override
+                public void onClickAd( AdMarvelView arg0, String arg1) {
+
+                }
+            } );
         }catch (Exception ignored){
 
         }
-    }
+    }*/
 
     @Override
     public void onResume(){
         super.onResume();
-        try {
+        /*try {
             adMarvelView.resume(this);
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        try {
+        //stopTimer();
+       /* try {
             adMarvelView.pause(this);
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        try {
+        /*try {
             adMarvelView.destroy();
         }catch (Exception ignored){
 
-        }
+        }*/
     }
 
     @Override
