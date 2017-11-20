@@ -186,9 +186,9 @@ public class ProfileActivity extends AppCompatActivity implements TextWatcher {
 
         if (isNavigationBarAvailable()) rl_main.setPadding(0,0,0,navBarHeight());
 
-        String android_id = Settings.Secure.getString(getContentResolver(),
+        /*String android_id = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        Log.e("device id",android_id);
+        Log.e("device id",android_id);*/
 
         //setAdmarvelAds();
         //startTimer();
@@ -1022,7 +1022,7 @@ public class ProfileActivity extends AppCompatActivity implements TextWatcher {
                 }
                 nameValuePairs.add(new BasicNameValuePair("provider_level_othr",otherLevel));
 
-               // Log.e("Name value of update", String.valueOf(nameValuePairs));
+                Log.e("Name value of update", String.valueOf(nameValuePairs));
 
 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));

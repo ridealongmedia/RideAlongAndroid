@@ -1,6 +1,7 @@
 package com.ridealongpivot;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.admin.DevicePolicyManager;
@@ -10,10 +11,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
+import android.content.res.Configuration;
 import android.content.res.Resources;
 
 import android.graphics.Color;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.AudioManager;
@@ -31,9 +37,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.View;
 
 import android.view.Window;
@@ -120,7 +129,6 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
     int selectedMenu=1;
     boolean isFirstTime=true;
     ArrayList<ReportModel> catIcons;
-    ActivityManager activityManager;
 
     final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -162,6 +170,7 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
 
     private int clickedCount=0;
     boolean isAlreadyClicked=false;
+    WindowManager mWindowManager;
 
 
     @Override
@@ -191,6 +200,9 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
 
         //adMarvelView            = (AdMarvelView) findViewById(R.id.ad);
         adView                  = (AdView) findViewById(R.id.adView);
+
+        mWindowManager          = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+
 
         lm                      = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -316,7 +328,6 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
             @Override
             public void onClick(View v) {
                 try {
-
                     selectedMenu=3;
                     setAnalyticsData();
                     ImageViewAnimatedChange(context, iv_selfie, R.drawable.selfie_enable);
@@ -358,6 +369,7 @@ public class Main_StartActivity extends AppCompatActivity implements GoogleApiCl
         });
 
     }
+
 
     public void setAnalyticsData(){
         mTracker.set("uid",GlobalClass.callSavedPreferences("email",context));

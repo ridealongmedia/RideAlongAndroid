@@ -83,7 +83,8 @@
         <activity
             android:name="com.ridealongpivot.Main_StartActivity"
             android:label="@string/title_activity_profile"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:theme="@style/AppTheme">
 

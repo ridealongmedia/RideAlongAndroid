@@ -1,14 +1,17 @@
 package com.ridealongpivot;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Camera;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,12 +21,16 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -97,6 +104,10 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
     private RewardedVideoAd mAd;
 
     private OnFragmentInteractionListener mListener;
+    OrientationEventListener orientationEventListener;
+
+    WindowManager mWindowManager;
+    int mLastRotation=0;
 
     public SelfieFragment() {
         // Required empty public constructor
@@ -137,6 +148,10 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
         ll_retake               = (LinearLayout) view.findViewById(R.id.ll_retake);
         surfaceCamera           = (SurfaceView) view.findViewById(R.id.surface_camera);
         bt_snap                 = (Button) view.findViewById(R.id.bt_snap);
+
+       // currentCameraId         = GlobalClass.callSavedPreferencesInt("currentCamera",currentCameraId,getContext());
+
+        Log.e("Current camera", String.valueOf(currentCameraId));
 
         loadRewardedVideoAd();
         ll_retake.setVisibility(View.GONE);
@@ -203,11 +218,31 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
                     } else {
                         currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
                     }
+                  //  GlobalClass.savePreferencesInt("currentCamera",currentCameraId,getContext());
                     ll_retake.setVisibility(View.GONE);
                     start_camera(currentCameraId);
                 }
             }
         });
+
+        orientationEventListener = new OrientationEventListener(getActivity(),
+                SensorManager.SENSOR_DELAY_NORMAL) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                int rotation = display.getRotation();
+                if ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) && rotation != mLastRotation) {
+                    stop_camera();
+                    start_camera(currentCameraId);
+                    mLastRotation = rotation;
+                    Log.e("Rotate", String.valueOf(rotation));
+                }
+            }
+        };
+        if (orientationEventListener.canDetectOrientation()) {
+            orientationEventListener.enable();
+        }
 
 
         return view;
@@ -329,7 +364,7 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
             previewing=true;
             camera = Camera.open(currentCameraId);
         }catch(RuntimeException e){
-            Log.e("Tag", "init_camera: " + e);
+           // Log.e("Tag", "init_camera: " + e);
             return;
         }
         Camera.Parameters param;
@@ -348,6 +383,7 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
         camera.setParameters(param);
         try {
             camera.setPreviewDisplay(surfaceHolder);
+            setCameraDisplayOrientation(getActivity(),currentCameraId,camera);
             camera.startPreview();
             //camera.takePicture(shutter, raw, jpeg)
         } catch (Exception e) {
@@ -426,6 +462,23 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
                     try {
 
                         Bitmap bitmap      = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        Log.e("orientation", String.valueOf(mLastRotation));
+                        if (mLastRotation == 3) {
+                            // Notice that width and height are reversed
+                            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+                            int w = scaled.getWidth();
+                            int h = scaled.getHeight();
+                            // Setting post rotate to 90
+                            Matrix mtx = new Matrix();
+                            mtx.postRotate(180);
+                            // Rotating Bitmap
+                            bitmap = Bitmap.createBitmap(scaled, 0, 0, w, h, mtx, true);
+                        }
+                        /*else{// LANDSCAPE MODE
+                            //No need to reverse width and height
+                            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(),bitmap.getHeight() , true);
+                            bitmap=scaled;
+                        }*/
                         Bitmap final_image = overlayBitmapToCenter(bitmap,BitmapFactory.decodeResource(getResources(), R.drawable.app_icon_new));
 
                         sendSelfieDialog(final_image);
@@ -521,7 +574,8 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
                         parameters.setPreviewSize(myBestSize.width, myBestSize.height);
                     }
                     camera.setParameters(parameters); // setting camera parameters
-                    camera.setPreviewDisplay(surfaceHolder); // setting preview of camera
+                    camera.setPreviewDisplay(surfaceHolder);// setting preview of camera
+                    setCameraDisplayOrientation(getActivity(),currentCameraId,camera);
                     camera.startPreview();  // starting camera preview
 
                     camCondition = true; // setting camera to true which means having camera
@@ -534,11 +588,41 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
         else start_camera(currentCameraId);
     }
 
+    public static void setCameraDisplayOrientation(Activity activity,
+                                                   int cameraId, android.hardware.Camera camera) {
+
+        android.hardware.Camera.CameraInfo info =
+                new android.hardware.Camera.CameraInfo();
+
+        android.hardware.Camera.getCameraInfo(cameraId, info);
+
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        int degrees = 0;
+
+        switch (rotation) {
+            case Surface.ROTATION_0: degrees = 0; break;
+            case Surface.ROTATION_90: degrees = 90; break;
+            case Surface.ROTATION_180: degrees = 180; break;
+            case Surface.ROTATION_270: degrees = 270; break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+       // Log.e("rotation digree",degrees + " "+ result);
+        camera.setDisplayOrientation(result);
+    }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         // TODO Auto-generated method stub
         Log.e("Surface created","created");
         start_camera(currentCameraId);
+
 
 
     }
@@ -547,7 +631,7 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
     public void surfaceDestroyed(SurfaceHolder holder) {
         // TODO Auto-generated method stub
         //Log.e("Surface destroy","destroy");
-        if(previewing) {
+        if(camera!=null && previewing) {
             camera.stopPreview();  // stopping camera preview
             camera.release();       // releasing camera
             camera = null;          // setting camera to null when left
@@ -703,7 +787,13 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
         start_camera(currentCameraId);
         ll_retake.setVisibility(View.GONE);
         try {
-            Log.e("admob","admob");
+            if (orientationEventListener.canDetectOrientation()) {
+                orientationEventListener.enable();
+            }
+        }catch (Exception e){
+
+        }
+        try {
             loadRewardedVideoAd();
         }catch (Exception ignored){
 
@@ -713,6 +803,13 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
     @Override
     public void onPause() {
         super.onPause();
+        try {
+            if (orientationEventListener.canDetectOrientation()) {
+                orientationEventListener.disable();
+            }
+        }catch (Exception e){
+
+        }
        //stop_camera();
     }
 
@@ -720,6 +817,13 @@ public class SelfieFragment extends Fragment implements SurfaceHolder.Callback, 
     public void onDestroy() {
         super.onDestroy();
         stop_camera();
+        try {
+            if (orientationEventListener.canDetectOrientation()) {
+                orientationEventListener.disable();
+            }
+        }catch (Exception e){
+
+        }
     }
 
 }
